@@ -1,4 +1,4 @@
-local FlyAnimations = {
+return {
     FlyV1 = {
         Idle = 3541044388,
         Move = 3541114300
