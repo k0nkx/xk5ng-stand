@@ -21,15 +21,6 @@ local function getPriority(p)
     return Enum.AnimationPriority.Action
 end
 
-function Handler:Stop(Character: Model)
-    local Hum = self:Humanoid(Character)
-    if not Hum then return end
-
-    for _, Track in pairs(Hum:GetPlayingAnimationTracks()) do
-        Track:Stop()
-    end
-end
-
 function Handler:AnimPlay(Data)
     if typeof(Data) ~= "table" or not Data.Id then return end
 
@@ -38,20 +29,27 @@ function Handler:AnimPlay(Data)
 
     local ID = tostring(Data.Id)
 
-    -- stop same anim if already playing
+    -- remove same anim if already playing
     for _, Track in pairs(Hum:GetPlayingAnimationTracks()) do
         if Track.Animation and Track.Animation.AnimationId:match("rbxassetid://" .. ID) then
-            Track:Stop()
+            Track:Stop(0)
         end
     end
 
-    -- stop current
-    if Data.StopCurrent and Playing then
-        pcall(function()
-            Playing:Stop()
-            Playing:Destroy()
-        end)
-        Playing = nil
+    -- switching logic
+    if Playing then
+        if Data.SmoothSwitch then
+            -- smooth fade out old
+            pcall(function()
+                Playing:Stop(Data.SwitchFade or 0.25)
+            end)
+        else
+            -- instant stop
+            pcall(function()
+                Playing:Stop(0)
+                Playing:Destroy()
+            end)
+        end
     end
 
     -- save last
@@ -66,7 +64,10 @@ function Handler:AnimPlay(Data)
 
     Track.Priority = getPriority(Data.Priority)
 
-    Track:Play(Data.Smoothing or 0)
+    -- smooth fade in if enabled
+    local fadeIn = Data.SmoothSwitch and (Data.SwitchFade or 0.25) or 0
+
+    Track:Play(fadeIn)
 
     Track:AdjustSpeed(Data.PlaySpeed or 1)
 
@@ -107,6 +108,17 @@ function Handler:IsAnimPlaying(ID: string): boolean
     return false
 end
 
+function Handler:StopAll()
+    local Hum = self:Humanoid(LocalPlayer)
+    if not Hum then return end
+
+    for _, Track in pairs(Hum:GetPlayingAnimationTracks()) do
+        Track:Stop(0)
+    end
+
+    Playing = nil
+end
+
 function Handler:ReturnLast()
     if Last then
         Last:Play()
@@ -116,7 +128,7 @@ end
 -- re-exec safety
 if _G.AnimHandler then
     pcall(function()
-        _G.AnimHandler:Stop()
+        _G.AnimHandler:StopAll()
     end)
 end
 
