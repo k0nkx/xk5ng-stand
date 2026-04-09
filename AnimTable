@@ -1,0 +1,50 @@
+local FlyAnimations = {
+    FlyV1 = {
+        Idle = 3541044388,
+        Move = 3541114300
+    },
+    FlyV2 = {
+        Idle = 3541044388,
+        Move = 3541114300
+    },
+    Hover = {
+        HoverAnim = 3541114300
+    },
+    Glide = {
+        HoverAnim = 3541114300,
+        GlideAnim = 3084858603
+    },
+    Star_Platinum_YBA = {
+        StandIdle = 132265247582111,
+        StandMove = 140008449641609
+    },
+    Star_Platinum_The_World_YBA = {
+        StandIdle = 123739811514617,
+        StandMove = 140008449641609
+    },
+    Killer_Queen_YBA = {
+        StandIdle = 83301486567360,
+        StandMove = 140008449641609
+    },
+    Golden_Experience_YBA = {
+        StandIdle = 127124369027349,
+        StandMove = 140008449641609
+    },
+    The_World_YBA = {
+        StandIdle = 138668832731436,
+        StandMove = 140008449641609
+    },
+    The_World_OverHeaven_YBA = {
+        StandIdle = 107501461961978,
+        StandMove = 140008449641609
+    },
+    D4C_YBA = {
+        StandIdle = 101871296207276,
+        StandMove = 140008449641609
+    },
+    Heaven = {
+        HoverAnim = 3541114300,
+        IdleAnim = 13850634687,
+        GlideAnim = 3084858603
+    }
+}
